@@ -1,0 +1,52 @@
+1. DOCTOR'S CREDENTIALS
+
+    CREATE TABLE doctorCredentials (
+    -> id int NOT NULL,
+    -> password Varchar(30),
+    -> PRIMARY KEY (id),
+    ->     FOREIGN KEY (id) REFERENCES doctor(id));
+
+
+2. DOCTOR TABLE
+
+    CREATE TABLE doctor (
+    -> id int primary key,
+    -> firstName varchar(30),
+    -> lastName varchar(30),
+    -> city varchar(40),
+    -> specialization varchar(30),
+    -> bloodGroup varchar(3),
+    -> contact varchar(12)
+    );
+
+
+3 . PATIENT CREDENTIALS :
+     create table patientCrdentials (patientId varchar(10),
+    -> password varchar(30),
+    -> primary key(patientId),
+    -> foreign key (patientId) references patient(contact));
+
+4 . PATIENT'S DETAILS :
+    create table patient (
+        ->  firstName varchar(30),
+        ->  last name  varchar(30),
+        ->  contact varchar(10),
+        ->  bloodGrp varchar(3),
+        ->  city varchar(30),
+        ->  problem text,
+        ->  primary key(contact)
+    );
+
+5 . APPOINTMENTS : 
+    
+     create table appointments (
+    -> patientId varchar(12),
+    -> doctorId int,
+    -> date varchar(6),
+    -> slot int,
+    -> FOREIGN KEY (patientId) REFERENCES patient(contact),
+    -> FOREIGN KEY (doctorId) REFERENCES doctor(id));
+
+
+
+
