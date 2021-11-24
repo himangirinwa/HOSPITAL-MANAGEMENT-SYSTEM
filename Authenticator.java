@@ -5,77 +5,97 @@ public class Authenticator {
     Statement stmt;
     Connection con;
     ResultSet result;
+    PasswordEncrypter pass;
 
-    //constructor
-    Authenticator(){
-        try{ 
-            //establishing connection with the database   
-            con = ConnectionProvider.getConn(); 
-            stmt = con.createStatement();      
-        }
-        catch(Exception e){ System.out.println(e);}
-    }
+    // constructor
+    Authenticator() {
+        try {
+            // establishing connection with the database
+            con = ConnectionProvider.getConn();
+            stmt = con.createStatement();
 
-    @Override
-    protected void finalize() throws Throwable {
-        if(con!=null)
-            con.close();
-        if(stmt!=null)
-            stmt.close();
-        if(result!=null)
-            result.close();
-    }
-
-    //doctor login
-    void doctorLogin(int id, String password) {
-        try{
-            result = stmt.executeQuery("select id from doctorCredentials where id='"+id+"' and password='"+password+"'");
-            
-            //if credentials are valid, the logging in into the account
-            if(result.next()){   
-                
-                Doctor doctor = new Doctor(id, password);
-                doctor.menu();
+            try {
+                pass = new PasswordEncrypter();
+            } catch (Exception e) {
+                System.out.println(e);
             }
-            else{
-                System.out.println("INVALID LOGIN ID OR PASSWORD !");
-            }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        if (con != null)
+            con.close();
+        if (stmt != null)
+            stmt.close();
+        if (result != null)
+            result.close();
+    }
 
-    //patient login
-    void patientLogin(String contact, String password, String problem) {
+    // admin login
+    void adminLogin(String password) {
+        String hashCode = pass.returnHash(password);
+
         try {
-            if(!problem.equalsIgnoreCase("same")){
-                stmt.executeUpdate("update patient set problem='"+problem+"'");
-            }                
-            
-            //check patient table , if exists and retrieve all data
-            result = stmt.executeQuery("select patientId, password from patientcrdentials where patientId='"+contact+"' and password='"+password+"'"); 
-            
-            
-            if(result.next()){   
-                //patient exists 
-                // result.next();
-                String sql = "select * from patient where contact='"+result.getString(1)+"'";
-                // System.out.println(sql);
-                result = stmt.executeQuery(sql);
-                result.next();
-    
-                // fetch all data of patient
-                Patient patient = new Patient(result.getString("firstName"),  result.getString("lastName"),  result.getString("contact"), result.getString("problem"), result.getString("city"), password,  result.getString("bloodGrp"));
-                //provinding patatient functionalities after successful login
-                patient.menu();
+            result = stmt.executeQuery("SELECT password FROM admin_credentials");
+
+            if (result.next()) {
+                String actualHash = result.getString("password");
+                if (hashCode.equals(actualHash)) {
+                    // providing admin funtionalities after correct login
+                    Admin a = new Admin();
+                    a.menu();
+                } else
+                    System.out.println("INVALID PASSWORD !");
             }
-            else{
-                System.out.println("INVALID LOGIN ID OR PASSWORD !");
-            }
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        catch(Exception e){
+    }
+
+    // doctor login
+    void doctorLogin(int id, String password) {
+        String hashCode = pass.returnHash(password);
+
+        try {
+            result = stmt.executeQuery("SELECT password FROM doctor_login WHERE doctor_id=\"" + id + "\"");
+
+            if (result.next()) {
+                String actualHash = result.getString("password");
+                if (hashCode.equals(actualHash)) {
+                    // providing admin funtionalities after correct login
+                    Doctor doct = new Doctor(id);
+                    doct.menu();
+                } else
+                    System.out.println("INVALID PASSWORD!");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    // patient login
+    void patientLogin(String contact, String password) {
+        String hashCode = pass.returnHash(password);
+
+        try {
+            result = stmt.executeQuery("SELECT password FROM patient_login WHERE patientId=\"" + contact + "\"");
+
+            if (result.next()) {
+                String actualHash = result.getString("password");
+                if (hashCode.equals(actualHash)) {
+                    // providing admin funtionalities after correct login
+                    Patient pat = new Patient(contact);
+                    pat.menu();
+                } else
+                    System.out.println("INVALID PASSWORD!");
+            }
+
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

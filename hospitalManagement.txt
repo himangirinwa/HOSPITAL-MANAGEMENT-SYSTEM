@@ -1,63 +1,67 @@
+					*******  ROLES & PRIVILEGES ******** 
+	
 ROLES : 
 	1. ADMIN
 	2. DOCTOR
 	3. PATIENT
 
 
-
-ADMIN : 
-	I. ADD DOCTOR
-	II. VIEW ALL DOCTORS
-	III. MODIFY DOCTOR'S RECORD
-	IV. DELETE ALL DOCTORS
-	V. VIEW ALL PATIENTS
-	VI. VIEW APPOINTMENTS
+ADMIN PRIVILRGES: 
+	1. ADD DOCTOR
+    2. ADD SPECILIZATION FOR A DOCTOR
+    3. VIEW RECORD OF ALL DOCTORS
+    4. VIEW ALL DOCTORS SPECIALIZATION
+    5. MODIFY A DOCTOR'S RECORD
+    6. DELETE A DOCTOR'S RECORD
+    7. CHANGE PASSWORD
+    8. VIEW ALL PATIENTS
+    9. VIEW APPOINTMENT
 	
 
-DOCTOR : 
+DOCTOR PRIVILRGES: 
 	I. VIEW HIS/HER APPOINTMENTS
 	II . CHANGE PASSWORD
 
-PATIENT 
+PATIENT PRIVILRGES:
 	I. SIGNUP
 	II. LOGIN
 	III. BOOK APPOINTMENTS
-	IV. MODIFY details
+	IV. MODIFY MODIFY
 	V. CHANGE PASSWORD
 
-TABLES : 
-	I. DOCTOR CREDENTIALS
-	II. DOCTOR
-	III. PATIENT CREDENTIALS
-	IV. PATIENT
-	V. APPOINTMENTS
+
+
+						*******  DATABASE TABLES ******** 
+
+
 	***FOR DATABASE CREATION .. LOOK UP TO DATABASE.TXT
 
 
-			SLOT NO       TIME
-			1			09:45 - 10:05
-			2			10:06 - 10:25
-			3			10:26 - 10:45
-			4   		10:46 - 11:05
-			5			11:06 - 11:25
-			6			11:26 - 11:45
-			7			12:06 - 12:25
-			------break ------
-			8			01:15 - 01:35
-			9			01:36 - 02:00
-			10			02:00 - 02:20
-			11			02:21 - 02:40
-			12			02:41 - 03:00
-			13			03:01 - 03:20
-			14			03:21 - 03:40
-			15			03:41 - 04:00
-			-----buffer-------
-			16			06:00 - 06:20
-			17			06:21 - 06:40
-			18			06:41 - 07:00
-			19			07:01 - 07:20
-			20			07:21 - 07:40
-			21			07:41 - 08:00
-			22			08:01 - 08:20
-			23			08:21 - 08:40
-			24			08:41 - 09:00
+	I. ADMIN LOGIN CREDENTIALS TABLE (namely admin_credentials)
+	- Stores password hash for admin login
+
+	II. DOCTOR'S LOGIN CREDENTIALS TABLE (namely doctor_login)
+	- Stores login details for Doctor i.e, doctor id and password hash. 
+
+	III. DOCTOR'S DETAILS TABLE (namely doctor_details)
+	- Stores doctor's details like firstname, lastname, contact number, mail_id, blood group, city and salary
+
+	IV. DOCTOR'S SPECALIZATION TABLE (namely doctor_specialization)
+	- Keeps record of various fiels a doctor is specialized in.
+	It can store more than one specilaizatiomn for any doctor.
+
+	V . PATIENT CREDENTIALS TABLE (patient_login)
+	- Stores login details for patient i.e, contact number(login_id) and password hash. 
+
+	VI. PATIENT'S DETAILS TABLE (patient_details)
+	- stores patient's firstname, lastname, contact number, blood group, mail id, and city.
+
+	VII. SLOTS 
+	- stores slots id, start time and end time for each slot 
+
+	V. APPOINTMENTS
+	- keeps record of all the appointments scheduled by the patients.
+	- it contains patientId, doctorid (id of doctor with which the patient has booked appointment with), date(date of appointment), slot id of the slot booked, and concern for visit.
+
+
+

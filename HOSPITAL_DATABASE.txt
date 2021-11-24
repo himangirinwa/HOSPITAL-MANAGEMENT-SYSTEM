@@ -1,52 +1,104 @@
-1. DOCTOR'S CREDENTIALS
+1. ADMIN LOGIN CREDENTIALS
+     CREATE TABLE admin_credentials
+    -> (password VARCHAR(64));
 
-    CREATE TABLE doctorCredentials (
-    -> id int NOT NULL,
-    -> password Varchar(30),
-    -> PRIMARY KEY (id),
-    ->     FOREIGN KEY (id) REFERENCES doctor(id));
-
-
-2. DOCTOR TABLE
-
-    CREATE TABLE doctor (
-    -> id int primary key,
-    -> firstName varchar(30),
-    -> lastName varchar(30),
-    -> city varchar(40),
-    -> specialization varchar(30),
-    -> bloodGroup varchar(3),
-    -> contact varchar(12)
-    );
-
-
-3 . PATIENT CREDENTIALS :
-     create table patientCrdentials (patientId varchar(10),
-    -> password varchar(30),
-    -> primary key(patientId),
-    -> foreign key (patientId) references patient(contact));
-
-4 . PATIENT'S DETAILS :
-    create table patient (
-        ->  firstName varchar(30),
-        ->  last name  varchar(30),
-        ->  contact varchar(10),
-        ->  bloodGrp varchar(3),
-        ->  city varchar(30),
-        ->  problem text,
-        ->  primary key(contact)
-    );
-
-5 . APPOINTMENTS : 
+    -> INSERT INTO admin_credentials VALUES ("L1mhdy54kyqI");
     
-     create table appointments (
+    admin password = "L1mhdy54kyqI"
+
+
+2. DOCTOR'S LOGIN CREDENTIALS
+
+     CREATE TABLE doctor_login
+    -> (doctor_id INT PRIMARY KEY NOT NULL,
+    -> FOREIGN KEY (doctor_id) REFERENCES doctor_details(doctor_id) ON DELETE CASCADE,
+    -> password varchar(64) NOT NULL);
+
+
+3. DOCTOR'S DETAILS TABLE
+
+    CREATE TABLE doctor_details
+    -> (doctor_id INT PRIMARY KEY NOT NULL,
+    -> firstname VARCHAR(30),
+    -> lastname VARCHAR(30),
+    -> bloodgrp VARCHAR(3),
+    -> city VARCHAR(30),
+    -> salary int;
+    -> contact VARCHAR(12) NOT NULL,
+    -> mail_id VARCHAR(30) NOT NULL);
+
+
+4. DOCTOR'S SPECALIZATION TABLE 
+
+    CREATE TABLE doctor_specialization
+    -> (doctor_id INT,
+    -> FOREIGN KEY (doctor_id) REFERENCES doctor_details(doctor_id)  ON DELETE CASCADE,
+    -> spcialized_in varchar(15));
+
+5 . PATIENT LOGIN CREDENTIALS :
+     
+   CREATE TABLE patient_login
+    -> ( patientId varchar(12),
+    -> password varchar(64) NOT NULL,
+    -> FOREIGN KEY (patientId) REFERENCES patient_details(contact) ON UPDATE CASCADE);
+
+
+6 . PATIENT'S DETAILS :
+    CREATE TABLE patient_details
+    -> ( firstname VARCHAR(30),
+    -> lastname VARCHAR(30),
+    -> contact VARCHAR(12) PRIMARY KEY NOT NULL,
+    -> bloodgrp VARCHAR(3),
+    -> mail_id VARCHAR(40) NOT NULL,
+    -> city VARCHAR(30));
+
+7 . APPOINTMENTS : 
+    
+    CREATE TABLE appointments (
     -> patientId varchar(12),
     -> doctorId int,
-    -> date varchar(6),
-    -> slot int,
-    -> FOREIGN KEY (patientId) REFERENCES patient(contact),
-    -> FOREIGN KEY (doctorId) REFERENCES doctor(id));
+    -> date DATE NOT NULL,
+    -> slot_id INT,
+    -> concern VARCHAR(75),
+    -> FOREIGN KEY (patientId) REFERENCES patient_details(contact),
+    -> FOREIGN KEY (doctorId) REFERENCES doctor_details(doctor_id),
+    -> FOREIGN KEY (slot_id) REFERENCES slots(slot_id));
+
+8. SLOTS TABLE
+
+     CREATE TABLE slots
+    -> (slot_id INT NOT NULL,
+    -> start_time TIME NOT NULL,
+    -> end_time TIME NOT NULL,
+    -> PRIMARY KEY (slot_id));
 
 
+ ------ slots --------
 
+        INSERT INTO slots VALUES (1, '9:45:00', '10:05:00');
+        INSERT INTO slots VALUES (2, '10:06:00', '10:25:00');
+        INSERT INTO slots VALUES (3, '10:26:00', '10:45:00');
+        INSERT INTO slots VALUES (4, '10:46:00', '11:05:00');
+        INSERT INTO slots VALUES (5, '11:06:00', '11:25:00');
+        INSERT INTO slots VALUES (6, '11:26:00', '11:45:00');
+        INSERT INTO slots VALUES (7, '12:06:00', '12:25:00');
+        INSERT INTO slots VALUES (8, '1:15:00', '1:35:00');
+        INSERT INTO slots VALUES (9, '1:36:00', '2:00:00');
+        INSERT INTO slots VALUES (10, '2:00:00', '2:20:00');
+        INSERT INTO slots VALUES (11, '2:21:00', '2:40:00');
+        INSERT INTO slots VALUES (12, '2:41:00', '3:00:00');
+        INSERT INTO slots VALUES (13, '03:01:00', '03:20:00');
+        INSERT INTO slots VALUES (14, '03:21:00', '03:40:00');
+        INSERT INTO slots VALUES (15, '03:41:00', '04:00:00');
+        INSERT INTO slots VALUES (16, '5:30:00', '5:50:00');
+        INSERT INTO slots VALUES (17, '5:51:00', '6:10:00');
+        INSERT INTO slots VALUES (18, '6:11:00', '6:30:00');
+        INSERT INTO slots VALUES (19, '6:31:00', '6:50:00');
+        INSERT INTO slots VALUES (20, '6:51:00', '7:10:00');
+        INSERT INTO slots VALUES (21, '7:11:00', '7:30:00');
+        INSERT INTO slots VALUES (22, '7:31:00', '7:50:00');
+        INSERT INTO slots VALUES (23, '7:51:00', '8:10:00');
+        INSERT INTO slots VALUES (24, '8:11:00', '8:30:00');
+        INSERT INTO slots VALUES (25, '8:31:00', '8:50:00');
+        INSERT INTO slots VALUES (26, '8:51:00', '9:10:00');
 
